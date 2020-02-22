@@ -5,7 +5,6 @@ $ascii_table = new Ascii_Table();
 $daftar = json_decode($_POST["daftar"]);
 $tindakan_masuk = json_decode($_POST["tindakan_masuk"]);
 $administrasi_masuk = json_decode($_POST["administrasi_masuk"]);
-$selprofile = json_decode($_POST["selprofile"]);
 $profilrs = json_decode($_POST["profilrs"]);
 $umur = json_decode($_POST["umur"]);
 

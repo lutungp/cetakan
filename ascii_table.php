@@ -469,4 +469,41 @@ class Ascii_Table
         
         return $marginlefttxt . $curr_tindakan_masuk . $marginrighttxt;
     }
+
+    public function aligncenter($kolom, $text, $justify = true)
+    {
+        $margin = intval($kolom) - strlen($text);
+        $marginleft = intval($margin/2);
+        $marginright = $margin-$marginleft;
+
+        return str_repeat(' ', $marginleft) . $text . str_repeat(' ', $marginright);
+    }
+
+    public function addPage($paperheight, $header, $text, $footer)
+    {
+        $bodyheight = $paperheight - $header - count(explode("\n", $footer));
+        $bodytext = explode("\n", $text);
+        $text = "";
+        $loop = 1;
+        foreach ($bodytext as $key => $value) {
+            $text .= $value . "\n";
+
+            if ($loop==$bodyheight) {
+                $text .= $footer;
+                $loop = $loop + ($footer-1);
+            }
+
+            $loop++;
+        }
+
+        $sisa = $paperheight - $loop - (count(explode("\n", $footer)));
+
+        if ($sisa > 0) {
+            $text .= $footer;
+            $text .= str_repeat("\n", $sisa);
+        }
+        echo $text;
+        return $text;
+    }
+
 }
