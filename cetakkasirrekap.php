@@ -44,14 +44,19 @@ $Data .= $condensed1;
 
 $height = 50;
 
-$text = "                  ".$tall14.$profilrs->sadministratorrs_nama.$tall0."\n";
-$text .= "                  " . $profilrs->sadministratorrs_alamat . " " . $profilrs->sadministratorrs_zipcode . "\n";
-$text .= "                  " . $profilrs->sadministratorrs_telp . " " . $profilrs->sadministratorrs_nofax . "\n";
+$text = "\n";
 $text .= "\n";
-$text .= "--------------------------------------------------------------------\n";
-$text .= "                 ".$tall14."*BUKTI PEMBAYARAN*".$tall0.            "\n";
-$text .= "            ----------------------------------------\n";
-$text .= "                              ".$tall10.$kasir->kasir_no.$tall0."\n";
+$text .= "\n";
+$text .= "\n";
+$text .= "\n";
+$title = $tall14."*BUKTI PEMBAYARAN*".$tall0;
+$aligncenter = $ascii_table->aligncenter(65, $title);
+$text .= $aligncenter . "\n";
+$aligncenter = $ascii_table->aligncenter(65, "----------------------------------------");
+$text .= $aligncenter . "\n";
+$kasirno = $tall10.$kasir->kasir_no.$tall0;
+$aligncenter = $ascii_table->aligncenter(65, $kasirno);
+$text .= $aligncenter . "\n";
 $text .= "  Nama          : ".$kasir->pasien_nama."\n";
 $text .= "  Alamat        : ".$kasir->pasien_alamat."\n";
 $text .= "  Tgl. Lahir    : ".date("d-m-Y", strtotime($kasir->pasien_tgllahir))."\n";
@@ -63,13 +68,40 @@ $text .= "  NO      PELAYANAN                                    HARGA  \n";
 $text .= "--------------------------------------------------------------------\n";
 $no = 1;
 $harga = 0;
-foreach ($kasirtagihan as $key => $value) {
+
+// $kasirtagihan = (array)$kasirtagihan;
+$arr = array();
+foreach ($kasirtagihan as $key => &$entry) {
+    $arr[$entry->tagihan_jenis][$key] = $entry;
+}
+$arr = array();
+foreach ($kasirtagihan as $key => $item) {
+   $arr[$item->tagihan_jenis][$key] = $item;
+}
+
+foreach ($arr as $key => $value) {
 	$alignright = $ascii_table->alignright(4, $no, 0);
 	$text .= $alignright.".";
-	$alignleft = $ascii_table->alignleft(2, $value->m_trans_nama, 50);
-	$text .= $alignleft;
-	$alignright = $ascii_table->alignright(15, number_format($value->tagihan_nilai), 2);
-	$text .= $alignright."\n";
+	$sub=0;
+	if ($key == "ADM. REGISTRASI") {
+		$text .= "[ADM]" . "\n";
+	} elseif ($key == "TINDAKAN PASIEN") {
+		$text .= "[TDK]" . "\n";
+	} elseif ($key == "OBAT PASIEN" || $key == "FARMASI") {
+		$text .= "[FAR]" . "\n";
+	} elseif ($key == "TINDAKAN LAB") {
+		$text .= "[LAB]" . "\n";
+	}
+	foreach ($value as $keytag => $valtag) {
+		$alignright = $ascii_table->alignright(5, " ", 0);
+		$text .= $alignright;
+		$m_trans_nama = $valtag->m_trans_nama;
+		$alignleft = $ascii_table->alignleft(2, $m_trans_nama, 50);
+		$text .= $alignleft;
+		$alignright = $ascii_table->alignright(15, number_format($valtag->tagihan_nilai), 2);
+		$text .= $alignright."\n";
+		$sub++;
+	}
 	$no++;
 }
 $text .= "--------------------------------------------------------------------\n";
@@ -96,7 +128,7 @@ $footer .= "\n";
 $footer .= "\n";
 $footer .= "\n";
 
-$result = $ascii_table->addPage(50, 0, $text, $footer);
+$result = $ascii_table->addPage(54, 0, $text, $footer);
 
 
 fwrite($handle, $Data . $result);

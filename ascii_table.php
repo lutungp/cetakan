@@ -490,7 +490,7 @@ class Ascii_Table
 
             if ($loop==$bodyheight) {
                 $text .= $footer;
-                $loop = $loop + ($footer-1);
+                $loop = 1;
             }
 
             $loop++;
@@ -502,7 +502,7 @@ class Ascii_Table
             $text .= $footer;
             $text .= str_repeat("\n", $sisa);
         }
-        echo $text;
+        
         return $text;
     }
 
