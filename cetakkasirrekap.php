@@ -10,6 +10,7 @@ $kasir = json_decode($_POST["kasir"]);
 $kasirtagihan = json_decode($_POST["kasirtagihan"]);
 $profilrs = json_decode($_POST["profilrs"]);
 $petugas = $_POST["petugas"];
+$detail_racikan = $_POST["detail_racikan"] ? json_decode($_POST["detail_racikan"]) : array();
 
 $tmpdir = sys_get_temp_dir();   # ambil direktori temporary untuk simpan file.
 $file =  tempnam($tmpdir, 'ctk');  # nama file temporary yang akan dicetak
@@ -69,7 +70,6 @@ $text .= "--------------------------------------------------------------------\n
 $no = 1;
 $harga = 0;
 
-// $kasirtagihan = (array)$kasirtagihan;
 $arr = array();
 foreach ($kasirtagihan as $key => &$entry) {
     $arr[$entry->tagihan_jenis][$key] = $entry;
@@ -82,7 +82,6 @@ foreach ($kasirtagihan as $key => $item) {
 foreach ($arr as $key => $value) {
 	$alignright = $ascii_table->alignright(4, $no, 0);
 	$text .= $alignright.".";
-	$sub=0;
 	if ($key == "ADM. REGISTRASI") {
 		$text .= "[ADM]" . "\n";
 	} elseif ($key == "TINDAKAN PASIEN") {
@@ -100,7 +99,19 @@ foreach ($arr as $key => $value) {
 		$text .= $alignleft;
 		$alignright = $ascii_table->alignright(15, number_format($valtag->tagihan_nilai), 2);
 		$text .= $alignright."\n";
-		$sub++;
+		if ($key == "OBAT PASIEN" || $key == "FARMASI") {
+			$jualdet_id = $valtag->t_transdet_id;
+			$dataracikan = array_filter($detail_racikan, function ($var) use ($jualdet_id) {
+	            return ($var->t_jualdet_racik_id == $jualdet_id);
+	        });
+			foreach ($dataracikan as $keyracik => $valracik) {
+				$alignright = $ascii_table->alignright(5, " ", 0);
+				$text .= $alignright;
+				$m_trans_nama = ">>> ". $valracik->barang_nama;
+				$alignleft = $ascii_table->alignleft(2, $m_trans_nama, 50);
+				$text .= $alignleft."\n";
+			}
+		}
 	}
 	$no++;
 }
