@@ -475,7 +475,6 @@ class Ascii_Table
         $margin = intval($kolom) - strlen($text);
         $marginleft = intval($margin/2);
         $marginright = $margin-$marginleft;
-
         return str_repeat(' ', $marginleft) . $text . str_repeat(' ', $marginright);
     }
 

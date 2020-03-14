@@ -43,7 +43,7 @@ $umur = $helper->getUmur($kasir->pasien_tgllahir);
 $Data  = $initialized;
 $Data .= $condensed1;
 
-$height = 50;
+$height = 54;
 
 $text = "\n";
 $text .= "\n";
@@ -139,12 +139,12 @@ $footer .= "\n";
 $footer .= "\n";
 $footer .= "\n";
 
-$result = $ascii_table->addPage(54, 0, $text, $footer);
+$result = $ascii_table->addPage($height, 0, $text, $footer);
 
 
 fwrite($handle, $Data . $result);
 fclose($handle);
-$printer = $profilrs->sadministratorrs_printdaftar;
+$printer = $profilrs->sadministratorrs_printerkasir;
 copy($file, $printer);  # Lakukan cetak
 unlink($file);
 ?>
