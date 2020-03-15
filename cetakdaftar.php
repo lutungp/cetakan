@@ -35,10 +35,7 @@ $pasien_norm = $pasien_norm[1] . "-" . $pasien_norm[2] . "-" . $pasien_norm[3];
 
 $Data  = $initialized;
 $Data .= $condensed1;
-$Data .= "                  ".$tall14.$profilrs->sadministratorrs_nama.$tall0."\n";
-$Data .= "                  " . $profilrs->sadministratorrs_alamat . " " . $profilrs->sadministratorrs_zipcode . "\n";
-$Data .= "                  " . $profilrs->sadministratorrs_telp . " " . $profilrs->sadministratorrs_nofax . "\n";
-$Data .= "\n";
+$Data .= "\n\n\n";
 $Data .= "  --------------------------------------------------------------------------\n";
 $Data .= "                       ".$tall14."*BUKTI REGISTRASI*".$tall0.            "\n";
 $Data .= "                              ".$tall10.$daftar->daftar_no.$tall0."\n";
